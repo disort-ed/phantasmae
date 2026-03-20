@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phantasma — Ghost Exhibition</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0f;
+    --deep: #0f0f1a;
+    --mid: #161625;
+    --mist: #1e1e30;
+    --fog: #2a2a42;
+    --silver: #8888aa;
+    --pale: #c0c0d8;
+    --ghost: #e8e8f0;
+    --white: #f5f5fc;
+    --accent: #7b6fa0;
+    --accent2: #a08878;
+    --glow: rgba(123,111,160,0.15);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--ghost);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: linear-gradient(to bottom, rgba(10,10,15,0.95), transparent);
+    backdrop-filter: blur(2px);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.3em;
+    color: var(--ghost);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+  .nav-links a {
+    color: var(--silver);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--white); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 40%, rgba(123,111,160,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 30% 30% at 20% 70%, rgba(100,90,140,0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 20%, rgba(80,70,120,0.05) 0%, transparent 60%);
+    z-index: 0;
+  }
+
+  /* Floating orbs */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.12;
+    animation: drift linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb1 { width: 400px; height: 400px; background: #5a4fa0; top: 10%; left: 5%; animation-duration: 22s; }
+  .orb2 { width: 300px; height: 300px; background: #8878b8; top: 50%; right: 8%; animation-duration: 28s; animation-delay: -8s; }
+  .orb3 { width: 250px; height: 250px; background: #a09080; bottom: 15%; left: 30%; animation-duration: 18s; animation-delay: -4s; }
+
+  @keyframes drift {
+    0% { transform: translateY(0) translateX(0); }
+    25% { transform: translateY(-30px) translateX(20px); }
+    50% { transform: translateY(-50px) translateX(-10px); }
+    75% { transform: translateY(-20px) translateX(30px); }
+    100% { transform: translateY(0) translateX(0); }
+  }
+
+  /* Ghost silhouette SVG */
+  .ghost-hero-svg {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.04;
+    width: 600px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    font-weight: 400;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 0.2em;
+    letter-spacing: -0.02em;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--pale);
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--silver);
+    max-width: 480px;
+    margin: 1.5rem auto 2.5rem;
+    font-style: italic;
+    line-height: 1.7;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.85rem 2.2rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.4s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--white);
+    border: 1px solid var(--accent);
+  }
+  .btn-primary:hover {
+    background: transparent;
+    color: var(--accent);
+    box-shadow: inset 0 0 0 1px var(--accent);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--ghost);
+    border: 1px solid rgba(200,200,220,0.25);
+  }
+  .btn-outline:hover {
+    border-color: rgba(200,200,220,0.6);
+    color: var(--white);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--silver);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    z-index: 1;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollDrop 2s ease-in-out infinite;
+  }
+  @keyframes scrollDrop {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* SECTION SHARED */
+  section { padding: 7rem 2rem; }
+
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 em { font-style: italic; color: var(--pale); }
+
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: var(--accent);
+    margin: 2rem 0;
+    opacity: 0.5;
+  }
+
+  /* ABOUT */
+  .about-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .about-text p {
+    color: var(--silver);
+    margin-bottom: 1.2rem;
+    line-height: 1.9;
+  }
+
+  .about-visual {
+    position: relative;
+    height: 460px;
+  }
+
+  .about-frame {
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(123,111,160,0.2);
+  }
+
+  .about-frame::before {
+    content: '';
+    position: absolute;
+    top: 20px; left: 20px; right: -20px; bottom: -20px;
+    border: 1px solid rgba(123,111,160,0.1);
+    pointer-events: none;
+  }
+
+  .about-ghost-art {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* EXHIBITS */
+  .exhibits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 4rem;
+  }
+
+  .exhibit-card {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--deep);
+    aspect-ratio: 3/4;
+  }
+
+  .exhibit-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.3) 50%, transparent 100%);
+    z-index: 1;
+  }
+
+  .exhibit-card-bg {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.8s ease;
+  }
+
+  .exhibit-card:hover .exhibit-card-bg {
+    transform: scale(1.05);
+  }
+
+  .exhibit-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem 1.8rem;
+    z-index: 2;
+  }
+
+  .exhibit-num {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    color: var(--accent);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .exhibit-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .exhibit-card p {
+    font-size: 0.9rem;
+    color: var(--silver);
+    line-height: 1.6;
+  }
+
+  /* FEATURED EXHIBIT */
+  .featured {
+    background: var(--deep);
+    border-top: 1px solid rgba(123,111,160,0.1);
+    border-bottom: 1px solid rgba(123,111,160,0.1);
+  }
+
+  .featured-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .featured-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-style: italic;
+    color: var(--pale);
+    line-height: 1.5;
+    padding-left: 2rem;
+    border-left: 1px solid var(--accent);
+    margin: 2rem 0;
+    opacity: 0.85;
+  }
+
+  /* EXPERIENCES */
+  .exp-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 3rem;
+    border-top: 1px solid rgba(200,200,220,0.08);
+  }
+
+  .exp-item {
+    display: grid;
+    grid-template-columns: 3rem 1fr auto;
+    gap: 2rem;
+    align-items: center;
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(200,200,220,0.08);
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+
+  .exp-item:hover { background: rgba(123,111,160,0.04); }
+
+  .exp-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--accent);
+    font-style: italic;
+    opacity: 0.7;
+  }
+
+  .exp-item h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+  }
+
+  .exp-item p {
+    font-size: 0.9rem;
+    color: var(--silver);
+  }
+
+  .exp-tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.9rem;
+    border: 1px solid rgba(123,111,160,0.3);
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  /* TICKETS */
+  .tickets-bg {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 100%, rgba(123,111,160,0.06) 0%, transparent 70%),
+      var(--black);
+  }
+
+  .tickets-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 4rem;
+  }
+
+  .ticket-card {
+    border: 1px solid rgba(200,200,220,0.1);
+    padding: 2.5rem 2rem;
+    transition: border-color 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ticket-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.4s;
+  }
+
+  .ticket-card:hover { border-color: rgba(123,111,160,0.35); }
+  .ticket-card:hover::before { transform: scaleX(1); }
+
+  .ticket-card.featured-ticket {
+    border-color: rgba(123,111,160,0.3);
+    background: rgba(123,111,160,0.04);
+  }
+
+  .ticket-card.featured-ticket::before { transform: scaleX(1); }
+
+  .ticket-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.75rem;
+    background: rgba(123,111,160,0.15);
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+
+  .ticket-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+
+  .ticket-price span {
+    font-size: 1rem;
+    color: var(--silver);
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .ticket-name {
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--silver);
+    margin-bottom: 2rem;
+  }
+
+  .ticket-features {
+    list-style: none;
+    margin-bottom: 2.5rem;
+  }
+
+  .ticket-features li {
+    font-size: 0.9rem;
+    color: var(--silver);
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(200,200,220,0.06);
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .tick {
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .tick::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    border-top: 1px solid rgba(200,200,220,0.07);
+    padding: 5rem 2rem 3rem;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 4rem;
+  }
+
+  .footer-brand p {
+    color: var(--silver);
+    font-size: 0.95rem;
+    margin-top: 1rem;
+    max-width: 280px;
+    line-height: 1.8;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--white);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  .footer-col h4 {
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.2rem;
+  }
+
+  .footer-col ul { list-style: none; }
+  .footer-col li {
+    margin-bottom: 0.6rem;
+  }
+  .footer-col a {
+    color: var(--silver);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+  }
+  .footer-col a:hover { color: var(--white); }
+
+  .footer-bottom {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(200,200,220,0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--silver);
+    opacity: 0.6;
+  }
+
+  /* PARTICLES */
+  #particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: rgba(200,200,230,0.5);
+    animation: float linear infinite;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 0.3; }
+    100% { transform: translateY(-10vh) translateX(50px); opacity: 0; }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .about-inner, .featured-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .exhibits-grid { grid-template-columns: 1fr 1fr; }
+    .tickets-grid { grid-template-columns: 1fr; max-width: 380px; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+    .about-visual { height: 300px; }
+  }
+
+  @media (max-width: 600px) {
+    .exhibits-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .footer-inner { grid-template-columns: 1fr; }
+    .exp-item { grid-template-columns: 2rem 1fr; }
+    .exp-tag { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="particles"></div>
+
+<nav>
+  <a href="#" class="nav-logo">Phantasma</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#exhibits">Exhibits</a></li>
+    <li><a href="#experiences">Experiences</a></li>
+    <li><a href="#tickets">Tickets</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <svg class="ghost-hero-svg" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M200 20 C100 20 40 100 40 200 C40 300 60 350 60 400 C60 430 40 460 60 480 C80 500 100 470 120 480 C140 490 140 460 160 480 C180 500 200 460 200 480 C200 460 220 500 240 480 C260 460 260 490 280 480 C300 470 320 500 340 480 C360 460 340 430 340 400 C340 350 360 300 360 200 C360 100 300 20 200 20Z" fill="white"/>
+    <circle cx="160" cy="200" r="20" fill="#0a0a0f"/>
+    <circle cx="240" cy="200" r="20" fill="#0a0a0f"/>
+  </svg>
+
+  <div class="hero-content">
+    <span class="hero-eyebrow">A journey beyond the veil</span>
+    <h1>
+      Where the<br>
+      <em>Departed</em><br>
+      Still Speak
+    </h1>
+    <p class="hero-subtitle">Step into the unknown. An immersive exhibition exploring the haunted spaces between the living and the lost.</p>
+    <div class="hero-cta">
+      <a href="#tickets" class="btn btn-primary">Reserve Your Visit</a>
+      <a href="#exhibits" class="btn btn-outline">Explore Exhibits</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Descend</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-inner">
+      <div class="about-text">
+        <span class="section-label">The Exhibition</span>
+        <h2>An Ancient <em>Mystery</em><br>Reimagined</h2>
+        <div class="divider"></div>
+        <p>Phantasma is a world-class exhibition dedicated to the art, history, and folklore of spectral phenomena. Through rare artefacts, immersive installations, and historical accounts, we invite you to explore humanity's oldest obsession.</p>
+        <p>From Victorian séance parlours to documented hauntings, from Japanese yūrei to Celtic banshees — every culture has its ghosts. Here, they come alive.</p>
+        <p>Operating since 1987, our collection spans over 2,000 artefacts and curated experiences across twelve distinct chambers.</p>
+        <a href="#exhibits" class="btn btn-outline" style="margin-top: 1rem;">Discover the Chambers</a>
+      </div>
+      <div class="about-visual">
+        <div class="about-frame"></div>
+        <svg class="about-ghost-art" viewBox="0 0 400 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#7b6fa0" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#7b6fa0" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="400" height="460" fill="#0f0f1a"/>
+          <ellipse cx="200" cy="200" rx="120" ry="120" fill="url(#glow1)"/>
+          <!-- Ghost form -->
+          <path d="M200 60 C150 60 110 100 110 160 C110 220 120 260 120 300 C120 320 110 340 120 355 C130 370 145 355 155 362 C165 370 165 355 175 362 C185 370 200 355 200 362 C200 355 215 370 225 362 C235 355 235 370 245 362 C255 355 270 370 280 355 C290 340 280 320 280 300 C280 260 290 220 290 160 C290 100 250 60 200 60Z" fill="#c0c0d8" opacity="0.08"/>
+          <path d="M200 70 C153 70 115 108 115 162 C115 218 124 258 124 298 C124 316 115 334 124 347 C133 360 146 347 155 353 C164 360 164 347 173 353 C182 360 200 347 200 353 C200 347 218 360 227 353 C236 347 236 360 245 353 C254 347 267 360 276 347 C285 334 276 316 276 298 C276 258 285 218 285 162 C285 108 247 70 200 70Z" fill="none" stroke="#8888aa" stroke-width="0.5" opacity="0.3"/>
+          <!-- Eyes -->
+          <ellipse cx="175" cy="165" rx="14" ry="18" fill="#0f0f1a" opacity="0.7"/>
+          <ellipse cx="225" cy="165" rx="14" ry="18" fill="#0f0f1a" opacity="0.7"/>
+          <ellipse cx="175" cy="162" rx="7" ry="9" fill="#7b6fa0" opacity="0.5"/>
+          <ellipse cx="225" cy="162" rx="7" ry="9" fill="#7b6fa0" opacity="0.5"/>
+          <!-- Floating particles -->
+          <circle cx="90" cy="120" r="2" fill="#8888aa" opacity="0.4"/>
+          <circle cx="310" cy="90" r="1.5" fill="#8888aa" opacity="0.3"/>
+          <circle cx="80" cy="250" r="1" fill="#a08878" opacity="0.4"/>
+          <circle cx="320" cy="220" r="2" fill="#8888aa" opacity="0.2"/>
+          <circle cx="140" cy="350" r="1.5" fill="#a08878" opacity="0.3"/>
+          <circle cx="270" cy="380" r="1" fill="#8888aa" opacity="0.4"/>
+          <!-- Candle bottom -->
+          <rect x="185" y="400" width="30" height="45" rx="2" fill="#2a2a42" opacity="0.8"/>
+          <ellipse cx="200" cy="400" rx="15" ry="4" fill="#1e1e30"/>
+          <line x1="200" y1="400" x2="200" y2="388" stroke="#a08878" stroke-width="1.5" opacity="0.7"/>
+          <ellipse cx="200" cy="386" rx="4" ry="6" fill="#f0a060" opacity="0.5"/>
+          <ellipse cx="200" cy="385" rx="2" ry="4" fill="#fff0c0" opacity="0.6"/>
+          <!-- Decorative border -->
+          <rect x="10" y="10" width="380" height="440" fill="none" stroke="#8888aa" stroke-width="0.3" opacity="0.2"/>
+          <rect x="20" y="20" width="360" height="420" fill="none" stroke="#8888aa" stroke-width="0.3" opacity="0.1"/>
+          <!-- Corner ornaments -->
+          <path d="M10 50 L10 10 L50 10" fill="none" stroke="#7b6fa0" stroke-width="0.8" opacity="0.4"/>
+          <path d="M350 10 L390 10 L390 50" fill="none" stroke="#7b6fa0" stroke-width="0.8" opacity="0.4"/>
+          <path d="M10 410 L10 450 L50 450" fill="none" stroke="#7b6fa0" stroke-width="0.8" opacity="0.4"/>
+          <path d="M350 450 L390 450 L390 410" fill="none" stroke="#7b6fa0" stroke-width="0.8" opacity="0.4"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXHIBITS -->
+<section id="exhibits" style="padding-top: 1rem; background: var(--deep);">
+  <div class="container">
+    <span class="section-label">The Chambers</span>
+    <h2>Six Worlds of<br><em>the Unseen</em></h2>
+  </div>
+  <div class="container">
+    <div class="exhibits-grid">
+
+      <div class="exhibit-card">
+        <div class="exhibit-card-bg">
+          <svg width="100%" height="100%" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="400" fill="#0d0d18"/>
+            <rect width="300" height="400" fill="url(#grad1)"/>
+            <defs>
+              <radialGradient id="grad1" cx="50%" cy="30%" r="60%">
+                <stop offset="0%" stop-color="#3a3060" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#0d0d18" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <!-- séance table -->
+            <ellipse cx="150" cy="250" rx="100" ry="30" fill="none" stroke="#4a4060" stroke-width="0.5" opacity="0.6"/>
+            <ellipse cx="150" cy="248" rx="80" ry="22" fill="none" stroke="#6a5a80" stroke-width="0.3" opacity="0.4"/>
+            <!-- candles -->
+            <rect x="80" y="220" width="8" height="30" fill="#2a2840" opacity="0.9"/>
+            <ellipse cx="84" cy="218" rx="4" ry="6" fill="#f0a040" opacity="0.4"/>
+            <rect x="210" y="220" width="8" height="30" fill="#2a2840" opacity="0.9"/>
+            <ellipse cx="214" cy="218" rx="4" ry="6" fill="#f0a040" opacity="0.4"/>
+            <!-- spirit form -->
+            <path d="M150 80 C135 80 120 95 120 120 C120 145 125 160 125 175 C125 182 120 188 125 193 C130 198 135 193 138 196 C141 199 141 193 144 196 C147 199 150 193 150 196 C150 193 153 199 156 196 C159 193 159 199 162 196 C165 193 170 198 175 193 C180 188 175 182 175 175 C175 160 180 145 180 120 C180 95 165 80 150 80Z" fill="#c0c0d8" opacity="0.07"/>
+            <!-- hands on table -->
+            <circle cx="110" cy="248" r="8" fill="#1a1a2a" stroke="#4a4060" stroke-width="0.5" opacity="0.7"/>
+            <circle cx="190" cy="248" r="8" fill="#1a1a2a" stroke="#4a4060" stroke-width="0.5" opacity="0.7"/>
+          </svg>
+        </div>
+        <div class="exhibit-info">
+          <span class="exhibit-num">Chamber 01</span>
+          <h3>The Séance Room</h3>
+          <p>Victorian spirit communication &amp; the age of mediums</p>
+        </div>
+      </div>
+
+      <div class="exhibit-card">
+        <div class="exhibit-card-bg">
+          <svg width="100%" height="100%" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="400" fill="#0a0d10"/>
+            <defs>
+              <radialGradient id="grad2" cx="50%" cy="70%" r="60%">
+                <stop offset="0%" stop-color="#0a2a1a" stop-opacity="0.8"/>
+                <stop offset="100%" stop-color="#0a0d10" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="300" height="400" fill="url(#grad2)"/>
+            <!-- torii gate -->
+            <rect x="90" y="140" width="12" height="180" fill="#1a0a08" opacity="0.9"/>
+            <rect x="198" y="140" width="12" height="180" fill="#1a0a08" opacity="0.9"/>
+            <rect x="75" y="130" width="150" height="14" rx="3" fill="#2a1208" opacity="0.9"/>
+            <rect x="82" y="147" width="136" height="8" rx="2" fill="#2a1208" opacity="0.7"/>
+            <!-- floating yurei -->
+            <path d="M150 50 C140 50 132 58 132 72 C132 86 135 94 135 102 C135 106 132 109 135 112 C137 115 140 112 142 113 C143 115 143 112 145 113 C147 115 150 112 150 113 C150 112 153 115 155 113 C157 112 157 115 160 113 C162 112 165 115 165 112 C168 109 165 106 165 102 C165 94 168 86 168 72 C168 58 160 50 150 50Z" fill="#e0e8e0" opacity="0.15"/>
+            <ellipse cx="150" cy="72" rx="8" ry="10" fill="#080e08" opacity="0.4"/>
+            <!-- lanterns -->
+            <ellipse cx="96" cy="100" rx="8" ry="12" fill="#c04010" opacity="0.25"/>
+            <ellipse cx="204" cy="100" rx="8" ry="12" fill="#c04010" opacity="0.25"/>
+            <line x1="96" y1="88" x2="96" y2="78" stroke="#804010" stroke-width="0.8" opacity="0.5"/>
+            <line x1="204" y1="88" x2="204" y2="78" stroke="#804010" stroke-width="0.8" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="exhibit-info">
+          <span class="exhibit-num">Chamber 02</span>
+          <h3>Yūrei Garden</h3>
+          <p>Japanese spirits, restless souls &amp; ancient rites</p>
+        </div>
+      </div>
+
+      <div class="exhibit-card">
+        <div class="exhibit-card-bg">
+          <svg width="100%" height="100%" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="400" fill="#100808"/>
+            <defs>
+              <radialGradient id="grad3" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#301010" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#100808" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="300" height="400" fill="url(#grad3)"/>
+            <!-- mirror frame -->
+            <rect x="70" y="40" width="160" height="220" rx="4" fill="none" stroke="#5a3030" stroke-width="1.5" opacity="0.5"/>
+            <rect x="75" y="45" width="150" height="210" rx="3" fill="none" stroke="#3a2020" stroke-width="0.5" opacity="0.5"/>
+            <!-- mirror surface -->
+            <rect x="80" y="50" width="140" height="200" rx="2" fill="#1a0808" opacity="0.6"/>
+            <!-- reflection ghost -->
+            <ellipse cx="150" cy="130" rx="30" ry="38" fill="#e0d8c8" opacity="0.06"/>
+            <path d="M150 95 C138 95 128 103 128 120 C128 138 132 150 132 160 C132 165 128 168 132 171 C135 174 138 171 140 173 C142 175 142 171 145 173 C147 175 150 171 150 173 C150 171 153 175 155 173 C157 171 157 175 160 173 C162 171 165 174 168 171 C172 168 168 165 168 160 C168 150 172 138 172 120 C172 103 162 95 150 95Z" fill="#e0d8d0" opacity="0.08"/>
+            <!-- candelabra -->
+            <line x1="150" y1="310" x2="150" y2="270" stroke="#4a3a3a" stroke-width="2" opacity="0.7"/>
+            <line x1="120" y1="280" x2="180" y2="280" stroke="#4a3a3a" stroke-width="1.5" opacity="0.7"/>
+            <ellipse cx="120" cy="276" rx="3" ry="5" fill="#f0a020" opacity="0.3"/>
+            <ellipse cx="150" cy="266" rx="3" ry="5" fill="#f0a020" opacity="0.35"/>
+            <ellipse cx="180" cy="276" rx="3" ry="5" fill="#f0a020" opacity="0.3"/>
+          </svg>
+        </div>
+        <div class="exhibit-info">
+          <span class="exhibit-num">Chamber 03</span>
+          <h3>Hall of Mirrors</h3>
+          <p>Reflections, portals &amp; the other side of glass</p>
+        </div>
+      </div>
+
+      <div class="exhibit-card">
+        <div class="exhibit-card-bg">
+          <svg width="100%" height="100%" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="400" fill="#080c14"/>
+            <defs>
+              <radialGradient id="grad4" cx="50%" cy="40%" r="55%">
+                <stop offset="0%" stop-color="#102040" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#080c14" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="300" height="400" fill="url(#grad4)"/>
+            <!-- castle walls -->
+            <rect x="20" y="200" width="260" height="200" fill="#0c1020" opacity="0.8"/>
+            <rect x="20" y="180" width="40" height="30" fill="#0c1020" opacity="0.8"/>
+            <rect x="80" y="170" width="40" height="40" fill="#0c1020" opacity="0.8"/>
+            <rect x="180" y="170" width="40" height="40" fill="#0c1020" opacity="0.8"/>
+            <rect x="240" y="180" width="40" height="30" fill="#0c1020" opacity="0.8"/>
+            <!-- moon -->
+            <circle cx="80" cy="80" r="35" fill="#202838" opacity="0.7"/>
+            <circle cx="90" cy="70" r="35" fill="#080c14" opacity="0.9"/>
+            <!-- bats -->
+            <path d="M200 60 C195 55 185 58 184 64 L188 62 L184 68 C188 66 192 68 196 66 C200 68 204 66 208 68 L204 62 L208 64 C207 58 197 55 200 60Z" fill="#4a4870" opacity="0.5"/>
+            <path d="M240 90 C237 86 230 88 229 92 L232 91 L229 95 C232 94 235 95 238 94 C241 95 244 94 247 95 L244 91 L247 92 C246 88 239 86 240 90Z" fill="#4a4870" opacity="0.4"/>
+            <!-- banshee -->
+            <path d="M150 100 C135 100 122 115 122 140 C122 165 128 178 128 192 C128 200 122 205 128 210 C133 215 138 210 141 213 C144 216 144 210 148 213 C151 216 150 210 150 213 C150 210 149 216 152 213 C155 210 156 216 159 213 C162 210 167 215 172 210 C178 205 172 200 172 192 C172 178 178 165 178 140 C178 115 165 100 150 100Z" fill="#b0b8d0" opacity="0.06"/>
+          </svg>
+        </div>
+        <div class="exhibit-info">
+          <span class="exhibit-num">Chamber 04</span>
+          <h3>The Banshee's Keep</h3>
+          <p>Celtic wailing spirits &amp; the folklore of doom</p>
+        </div>
+      </div>
+
+      <div class="exhibit-card">
+        <div class="exhibit-card-bg">
+          <svg width="100%" height="100%" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="400" fill="#0c0a08"/>
+            <defs>
+              <radialGradient id="grad5" cx="50%" cy="60%" r="55%">
+                <stop offset="0%" stop-color="#281808" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#0c0a08" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="300" height="400" fill="url(#grad5)"/>
+            <!-- gravestones -->
+            <rect x="60" y="260" width="40" height="60" rx="20" rx="20" fill="#1a1818" opacity="0.8"/>
+            <rect x="130" y="240" width="45" height="80" rx="22" fill="#1e1a18" opacity="0.9"/>
+            <rect x="200" y="260" width="38" height="60" rx="19" fill="#1a1818" opacity="0.8"/>
+            <!-- cross -->
+            <rect x="147" y="232" width="11" height="40" fill="#181614" opacity="0.9"/>
+            <rect x="138" y="248" width="29" height="7" fill="#181614" opacity="0.9"/>
+            <!-- ghost rising -->
+            <path d="M150 160 C137 160 126 172 126 192 C126 210 130 222 130 232 C130 237 126 240 130 243 C133 246 137 243 139 245 C141 247 141 243 144 245 C146 247 150 243 150 245 C150 243 154 247 156 245 C158 243 158 247 161 245 C163 243 167 246 170 243 C174 240 170 237 170 232 C170 222 174 210 174 192 C174 172 163 160 150 160Z" fill="#d0d8e0" opacity="0.09"/>
+            <!-- mist -->
+            <ellipse cx="150" cy="300" rx="140" ry="20" fill="#282828" opacity="0.3"/>
+            <ellipse cx="80" cy="310" rx="80" ry="12" fill="#282828" opacity="0.2"/>
+            <ellipse cx="220" cy="315" rx="70" ry="10" fill="#282828" opacity="0.2"/>
+            <!-- willow -->
+            <line x1="260" y1="150" x2="260" y2="290" stroke="#1a1808" stroke-width="2" opacity="0.7"/>
+            <path d="M260 170 C275 190 270 230 255 260" fill="none" stroke="#1a2008" stroke-width="1" opacity="0.4"/>
+            <path d="M260 170 C240 195 238 240 248 270" fill="none" stroke="#1a2008" stroke-width="1" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="exhibit-info">
+          <span class="exhibit-num">Chamber 05</span>
+          <h3>The Graveyard</h3>
+          <p>Burial rites, restless dead &amp; necromantic traditions</p>
+        </div>
+      </div>
+
+      <div class="exhibit-card">
+        <div class="exhibit-card-bg">
+          <svg width="100%" height="100%" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="400" fill="#080810"/>
+            <defs>
+              <radialGradient id="grad6" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#151528" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#080810" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="300" height="400" fill="url(#grad6)"/>
+            <!-- concentric circles - portal -->
+            <circle cx="150" cy="180" r="110" fill="none" stroke="#4a4880" stroke-width="0.3" opacity="0.3"/>
+            <circle cx="150" cy="180" r="90" fill="none" stroke="#5a5890" stroke-width="0.3" opacity="0.3"/>
+            <circle cx="150" cy="180" r="70" fill="none" stroke="#6a68a0" stroke-width="0.3" opacity="0.3"/>
+            <circle cx="150" cy="180" r="50" fill="none" stroke="#7a78b0" stroke-width="0.3" opacity="0.4"/>
+            <circle cx="150" cy="180" r="30" fill="none" stroke="#8a88c0" stroke-width="0.3" opacity="0.4"/>
+            <circle cx="150" cy="180" r="14" fill="#7b6fa0" opacity="0.15"/>
+            <!-- runes around circle -->
+            <text x="150" y="65" text-anchor="middle" fill="#6060a0" font-size="10" opacity="0.4">ᚱ</text>
+            <text x="240" y="185" text-anchor="middle" fill="#6060a0" font-size="10" opacity="0.4">ᚷ</text>
+            <text x="150" y="305" text-anchor="middle" fill="#6060a0" font-size="10" opacity="0.4">ᚠ</text>
+            <text x="60" y="185" text-anchor="middle" fill="#6060a0" font-size="10" opacity="0.4">ᚾ</text>
+            <!-- figure in portal -->
+            <ellipse cx="150" cy="165" rx="18" ry="22" fill="#d0d0e8" opacity="0.06"/>
+            <path d="M150 145 C143 145 137 151 137 162 C137 173 140 178 140 184 C140 187 137 189 140 191 C142 193 144 191 146 192 C147 193 147 191 149 192 C150 193 150 191 150 192 C150 191 150 193 151 192 C153 191 153 193 154 192 C156 191 158 193 160 191 C163 189 160 187 160 184 C160 178 163 173 163 162 C163 151 157 145 150 145Z" fill="#d0d0e8" opacity="0.07"/>
+          </svg>
+        </div>
+        <div class="exhibit-info">
+          <span class="exhibit-num">Chamber 06</span>
+          <h3>The Liminal Portal</h3>
+          <p>Thresholds, crossings &amp; the space between worlds</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED EXHIBIT -->
+<section class="featured" id="featured">
+  <div class="container">
+    <div class="featured-inner">
+      <div>
+        <span class="section-label">This Season</span>
+        <h2>The <em>Whitmore</em><br>Haunting</h2>
+        <div class="divider"></div>
+        <p style="color: var(--silver); line-height: 1.9; margin-bottom: 1rem;">In 1893, the Whitmore family reported a series of inexplicable events in their Derbyshire manor. This special exhibition presents original photographs, correspondence, and objects recovered from the estate — never before shown to the public.</p>
+        <p style="color: var(--silver); line-height: 1.9; margin-bottom: 2rem;">Featuring first-person accounts, investigator journals, and an audio reconstruction of the infamous November séance.</p>
+        <a href="#tickets" class="btn btn-primary">Book Featured Exhibition</a>
+      </div>
+      <div>
+        <blockquote class="featured-quote">
+          "Something moved behind the glass. Something that had no right to be there."
+        </blockquote>
+        <p style="color: var(--silver); font-size: 0.85rem; padding-left: 2rem; letter-spacing: 0.1em;">— Eleanor Whitmore, diary entry, 14th November 1893</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCES -->
+<section id="experiences">
+  <div class="container">
+    <span class="section-label">Beyond the Exhibition</span>
+    <h2>Immersive <em>Experiences</em></h2>
+    <div class="exp-list">
+
+      <div class="exp-item">
+        <div class="exp-num">I</div>
+        <div>
+          <h3>Midnight Ghost Tour</h3>
+          <p>A guided walk through all twelve chambers after dark. Torchlight only. Not for the faint-hearted.</p>
+        </div>
+        <span class="exp-tag">Nightly • 10pm</span>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-num">II</div>
+        <div>
+          <h3>Séance Workshop</h3>
+          <p>Learn authentic Victorian spirit communication techniques with our resident medium and historian.</p>
+        </div>
+        <span class="exp-tag">Fri & Sat</span>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-num">III</div>
+        <div>
+          <h3>EVP Recording Session</h3>
+          <p>Electronic voice phenomenon — capture what the ears cannot hear in our specially designed listening chamber.</p>
+        </div>
+        <span class="exp-tag">Limited Slots</span>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-num">IV</div>
+        <div>
+          <h3>The Haunted Dinner</h3>
+          <p>A five-course dinner in our Victorian banquet hall, with theatrical ghost storytelling between each course.</p>
+        </div>
+        <span class="exp-tag">Saturdays Only</span>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-num">V</div>
+        <div>
+          <h3>Children's Spirit Trail</h3>
+          <p>A spooky (not scary) adventure through our family-friendly chambers with a mystery to solve.</p>
+        </div>
+        <span class="exp-tag">Daily • All Ages</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TICKETS -->
+<section id="tickets" class="tickets-bg">
+  <div class="container">
+    <span class="section-label">Visit Us</span>
+    <h2>Choose Your<br><em>Passage</em></h2>
+    <div class="tickets-grid">
+
+      <div class="ticket-card">
+        <div class="ticket-badge">General</div>
+        <div class="ticket-price">₹499 <span>/ person</span></div>
+        <div class="ticket-name">Wanderer's Pass</div>
+        <ul class="ticket-features">
+          <li><span class="tick"></span>All six main chambers</li>
+          <li><span class="tick"></span>Audio guide included</li>
+          <li><span class="tick"></span>Exhibition catalogue</li>
+          <li><span class="tick"></span>Valid 1 day</li>
+        </ul>
+        <a href="#" class="btn btn-outline" style="display: block; text-align: center;">Book Now</a>
+      </div>
+
+      <div class="ticket-card featured-ticket">
+        <div class="ticket-badge">Most Popular</div>
+        <div class="ticket-price">₹999 <span>/ person</span></div>
+        <div class="ticket-name">Phantom's Pass</div>
+        <ul class="ticket-features">
+          <li><span class="tick"></span>All chambers + special exhibitions</li>
+          <li><span class="tick"></span>Midnight ghost tour</li>
+          <li><span class="tick"></span>Priority entry</li>
+          <li><span class="tick"></span>Complimentary drink</li>
+          <li><span class="tick"></span>Souvenir keepsake</li>
+        </ul>
+        <a href="#" class="btn btn-primary" style="display: block; text-align: center;">Book Now</a>
+      </div>
+
+      <div class="ticket-card">
+        <div class="ticket-badge">Premium</div>
+        <div class="ticket-price">₹1,999 <span>/ person</span></div>
+        <div class="ticket-name">Spectre's Pass</div>
+        <ul class="ticket-features">
+          <li><span class="tick"></span>Full access — all experiences</li>
+          <li><span class="tick"></span>Private séance session</li>
+          <li><span class="tick"></span>EVP recording session</li>
+          <li><span class="tick"></span>Haunted dinner included</li>
+          <li><span class="tick"></span>Signed collector's book</li>
+        </ul>
+        <a href="#" class="btn btn-outline" style="display: block; text-align: center;">Book Now</a>
+      </div>
+
+    </div>
+
+    <p style="color: var(--silver); text-align: center; margin-top: 2.5rem; font-size: 0.9rem; font-style: italic;">
+      Open daily 10am – 2am &nbsp;·&nbsp; Closed on full moon nights (by tradition)
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">Phantasma</div>
+      <p>Where history, folklore, and the unknown converge. Hyderabad's most haunting cultural experience since 1987.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Visit</h4>
+      <ul>
+        <li><a href="#">Plan Your Visit</a></li>
+        <li><a href="#">Opening Hours</a></li>
+        <li><a href="#">Location & Map</a></li>
+        <li><a href="#">Accessibility</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="#">All Exhibitions</a></li>
+        <li><a href="#">Experiences</a></li>
+        <li><a href="#">Private Events</a></li>
+        <li><a href="#">Gift Shop</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Newsletter</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Phantasma Ghost Exhibition. All rights reserved.</span>
+    <span>Hyderabad, Telangana, India</span>
+  </div>
+</footer>
+
+<script>
+  // Floating particles
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (10 + Math.random() * 20) + 's';
+    p.style.animationDelay = -(Math.random() * 20) + 's';
+    p.style.width = p.style.height = (1 + Math.random() * 2.5) + 'px';
+    p.style.opacity = 0.1 + Math.random() * 0.4;
+    container.appendChild(p);
+  }
+
+  // Smooth nav hide/show
+  let lastY = 0;
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y > lastY && y > 100) {
+      nav.style.transform = 'translateY(-100%)';
+    } else {
+      nav.style.transform = 'translateY(0)';
+    }
+    lastY = y;
+    nav.style.transition = 'transform 0.4s ease';
+  });
+</script>
+</body>
+</html>
